@@ -1,0 +1,112 @@
+{
+  "name": "switch2idea",
+  "displayName": "Switch2IDEA",
+  "description": "Quickly switch between VS Code and IntelliJ IDEA, open current file in IDEA with the same position",
+  "version": "1.0.0",
+  "publisher": "qczone",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qczone/switch2idea"
+  },
+  "icon": "images/icon.png",
+  "engines": {
+    "vscode": "^1.93.1"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "intellij",
+    "idea",
+    "jetbrains",
+    "switch",
+    "open"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "Switch2IDEA.openFileInIDEA",
+        "title": "Open File in IDEA"
+      },
+      {
+        "command": "Switch2IDEA.openProjectInIDEA",
+        "title": "Open Project in IDEA"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "Switch2IDEA.openFileInIDEA",
+        "key": "alt+shift+o",
+        "mac": "alt+shift+o",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "Switch2IDEA.openProjectInIDEA",
+        "key": "alt+shift+p",
+        "mac": "alt+shift+p"
+      }
+    ],
+    "configuration": {
+      "title": "Switch2IDEA",
+      "properties": {
+        "switch2idea.ideaPath": {
+          "type": "string",
+          "default": "",
+          "description": "IDEA executable path"
+        },
+        "switch2idea.keyboardShortcut": {
+          "type": "string",
+          "default": "alt+shift+o",
+          "description": "Keyboard shortcut to open file in IDEA (requires restart)"
+        }
+      }
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "command": "Switch2IDEA.openFileInIDEA",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "Switch2IDEA.openFileInIDEA",
+          "group": "navigation"
+        },
+        {
+          "command": "Switch2IDEA.openProjectInIDEA",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "package": "pnpm vsce package --no-dependencies",
+    "publish": "pnpm vsce publish --no-dependencies"
+  },
+  "packageManager": "pnpm@9.6.0",
+  "devDependencies": {
+    "@types/vscode": "^1.93.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "eslint": "^9.16.0",
+    "typescript": "^5.7.2",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.2.1"
+  }
+}
