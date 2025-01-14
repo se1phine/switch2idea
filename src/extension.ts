@@ -1,6 +1,31 @@
 import * as vscode from 'vscode';
 import { exec } from 'child_process';
 import * as os from 'os';
+import * as fs from 'fs';
+
+function getMacIdeaPath(): string {
+	const commonPaths = [
+		'/Applications/IDEA.app',
+		'/Applications/IntelliJ IDEA.app',
+		'/Applications/IntelliJ IDEA CE.app',
+		'/Applications/IntelliJ IDEA Ultimate.app',
+		'/Applications/IntelliJ IDEA Community Edition.app', 
+		`${os.homedir()}/Applications/IDEA.app`,
+		`${os.homedir()}/Applications/IntelliJ IDEA.app`,
+		`${os.homedir()}/Applications/IntelliJ IDEA CE.app`,
+		`${os.homedir()}/Applications/IntelliJ IDEA Ultimate.app`,
+		`${os.homedir()}/Applications/IntelliJ IDEA Community Edition.app`,
+	];
+
+	// 遍历所有可能的 IDEA 安装路径，找到第一个存在的路径
+	for (const path of commonPaths) {
+		if (fs.existsSync(path)) {
+			return path;
+		}
+	}
+	// 如果所有路径都不存在，则返回默认的 APP 名称
+	return 'IntelliJ IDEA';
+}
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -34,7 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		if (!ideaPath) {
 			if (os.platform() === 'darwin') {
-				ideaPath = 'idea';
+				ideaPath = getMacIdeaPath();
 			} else if (os.platform() === 'win32') {
 				ideaPath = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA\\bin\\idea64.exe';
 			} else {
@@ -45,6 +70,8 @@ export function activate(context: vscode.ExtensionContext) {
 		let command: string;
 		if (os.platform() === 'darwin') {
 			const ideaUrl = `idea://open?file=${encodeURIComponent(filePath)}&line=${line}&column=${column}`;
+			// 如果 IDEA 已经打开，使用 idea 命令打开会在 dock 栏中出现两个 IDEA 图标，短暂停留后第二个消失
+			//所以使用 open 命令打开，不会出现这个问题
 			command = `open -a "${ideaPath}" "${ideaUrl}"`;
 		} else {
 			command = `"${ideaPath}" --line ${line} --column ${column} "${filePath}"`;
@@ -82,7 +109,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 		if (!ideaPath) {
 			if (os.platform() === 'darwin') {
-				ideaPath = 'idea';
+				const macIdeaPath = getMacIdeaPath();
+				ideaPath = macIdeaPath || 'IntelliJ IDEA';
 			} else if (os.platform() === 'win32') {
 				ideaPath = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA\\bin\\idea64.exe';
 			} else {

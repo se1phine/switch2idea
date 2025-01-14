@@ -23,8 +23,9 @@
 此扩展提供以下设置:
 
 * `switch2idea.ideaPath`: IDEA 可执行文件的路径
+  - macOS 会遍历常用安装路径,使用第一个存在的路径,如果没有则默认使用 `IntelliJ IDEA`
   - Windows 默认路径: `C:\Program Files\JetBrains\IntelliJ IDEA\bin\idea64.exe`
-  - macOS 和 linux 默认使用: `idea`
+  - linux 默认使用: `idea`
 * `switch2idea.keyboardShortcut`: 打开 IDEA 的快捷键 (需要重启 VS Code 生效)
   - 打开文件默认快捷键: `alt+shift+o`
   - 打开项目默认快捷键: `alt+shift+p`
@@ -42,9 +43,7 @@
 
 ## 常见问题
 
-1. 如果在 macOS 上无法打开 IDEA,请确保:
-   - 已安装 IDEA 命令行启动器
-   - 已将 IDEA 添加到系统 PATH
+1. 如果在 macOS 上无法打开 IDEA,请修改 `switch2idea.ideaPath` 为 IDEA 的安装路径
 
 2. 如果在 Windows 上无法打开 IDEA,请检查:
    - IDEA 安装路径是否正确
