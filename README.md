@@ -1,6 +1,10 @@
 # Switch2IDEA
 
-一个简单的 VS Code 扩展,用于快速在 VS Code 和 IntelliJ IDEA 之间切换当前文件。
+> 推荐在 IDEA 中配合 [Switch2Cursor](https://github.com/qczone/switch2cursor) 使用，效果更佳
+
+一个简单的 VS Code (Cursor) 扩展,用于快速在 VS Code (Cursor) 和 IntelliJ IDEA 之间无缝切换，并保持精确的光标位置。
+
+![Switch2IDEA演示](images/switch-show.gif)
 
 ## 功能特性
 
@@ -8,6 +12,11 @@
 - 保持光标位置,在 IDEA 中定位到相同的行和列
 - 支持从文件浏览器中右键打开文件
 - 支持打开整个项目到 IDEA
+
+## 安装
+
+1. 点击 [这里](https://marketplace.cursorapi.com/items?itemName=qczone.switch2idea) 安装
+2. 在 VS Code (Cursor) 扩展市场中搜索 "Switch2IDEA" 并安装
 
 ## 使用方法
 
@@ -35,11 +44,6 @@
 - VS Code 1.93.1 或更高版本
 - 已安装 IntelliJ IDEA
 
-## 安装
-
-1. 在 VS Code 扩展市场中搜索 "Switch2IDEA"
-2. 点击安装
-3. 重启 VS Code
 
 ## 常见问题
 
