@@ -2,7 +2,7 @@
   "name": "switch2idea",
   "displayName": "Switch2IDEA",
   "description": "Quickly switch between VS Code and IntelliJ IDEA, open current file in IDEA with the same position",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "qczone",
   "license": "MIT",
   "repository": {
@@ -59,11 +59,6 @@
           "type": "string",
           "default": "",
           "description": "IDEA executable path"
-        },
-        "switch2idea.keyboardShortcut": {
-          "type": "string",
-          "default": "alt+shift+o",
-          "description": "Keyboard shortcut to open file in IDEA (requires restart)"
         }
       }
     },
