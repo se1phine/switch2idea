@@ -115,3 +115,7 @@ This project is licensed under the [MIT License](LICENSE)
 If you encounter issues or have suggestions, please provide feedback through:
 
 - [Submit GitHub Issue](https://github.com/qczone/switch2idea/issues) 
+
+## 🌟 Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=qczone/switch2idea&type=Date)](https://star-history.com/#qczone/switch2idea&Date)
