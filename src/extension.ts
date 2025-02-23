@@ -17,14 +17,44 @@ function getMacIdeaPath(): string {
 		`${os.homedir()}/Applications/IntelliJ IDEA Community Edition.app`,
 	];
 
-	// 遍历所有可能的 IDEA 安装路径，找到第一个存在的路径
+	// Iterate through all possible IDEA installation paths and return the first existing path
 	for (const path of commonPaths) {
 		if (fs.existsSync(path)) {
 			return path;
 		}
 	}
-	// 如果所有路径都不存在，则返回默认的 APP 名称
+	// If no paths exist, return the default APP name
 	return 'IntelliJ IDEA';
+}
+
+function executeCommand(command: string): Promise<void> {
+	return new Promise((resolve, reject) => {
+		const childProcess = exec(command, (error, stdout, stderr) => {
+			if (error) {
+				console.error('Error executing command:', error);
+				console.error('Stderr:', stderr);
+				reject(error);
+				return;
+			}
+			if (stdout) {
+				console.log('Command output:', stdout);
+			}
+			if (stderr) {
+				console.log('Command stderr:', stderr);
+			}
+			resolve();
+		});
+
+		// Add error handling
+		childProcess.on('error', (error: NodeJS.ErrnoException) => {
+			if (error.code === 'EPIPE') {
+				console.log('Pipe communication disconnected, but this may not affect IDEA startup');
+				resolve(); // Continue execution as IDEA may have started normally
+			} else {
+				reject(error);
+			}
+		});
+	});
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -70,8 +100,8 @@ export function activate(context: vscode.ExtensionContext) {
 		let command: string;
 		if (os.platform() === 'darwin') {
 			const ideaUrl = `idea://open?file=${encodeURIComponent(filePath)}&line=${line}&column=${column}`;
-			// 如果 IDEA 已经打开，使用 idea 命令打开会在 dock 栏中出现两个 IDEA 图标，短暂停留后第二个消失
-			//所以使用 open 命令打开，不会出现这个问题
+			// If IDEA is already open, using the 'idea' command will show two IDEA icons in the dock temporarily
+			// Using the 'open' command instead will prevent this issue
 			command = `open -a "${ideaPath}" "${ideaUrl}"`;
 		} else {
 			command = `"${ideaPath}" --line ${line} --column ${column} "${filePath}"`;
@@ -79,20 +109,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 		console.log('Executing command:', command);
 
-		exec(command, (error, stdout, stderr) => {
-			if (error) {
-				console.error('Error executing command:', error);
-				console.error('Stderr:', stderr);
-				vscode.window.showErrorMessage(`Failed to open IDEA: ${error.message}`);
-				return;
-			}
-			if (stdout) {
-				console.log('Command output:', stdout);
-			}
-			if (stderr) {
-				console.log('Command stderr:', stderr);
-			}
-		});
+		try {
+			await executeCommand(command);
+		} catch (error) {
+			const err = error as Error;
+			vscode.window.showErrorMessage(`Failed to open IDEA: ${err.message}`);
+		}
 	});
 
 	let openProjectDisposable = vscode.commands.registerCommand('Switch2IDEA.openProjectInIDEA', async () => {
@@ -128,20 +150,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 		console.log('Executing command:', command);
 
-		exec(command, (error, stdout, stderr) => {
-			if (error) {
-				console.error('Error executing command:', error);
-				console.error('Stderr:', stderr);
-				vscode.window.showErrorMessage(`Failed to open project in IDEA: ${error.message}`);
-				return;
-			}
-			if (stdout) {
-				console.log('Command output:', stdout);
-			}
-			if (stderr) {
-				console.log('Command stderr:', stderr);
-			}
-		});
+		try {
+			await executeCommand(command);
+		} catch (error) {
+			const err = error as Error;
+			vscode.window.showErrorMessage(`Failed to open project in IDEA: ${err.message}`);
+		}
 	});
 
 	context.subscriptions.push(openFileDisposable);
