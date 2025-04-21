@@ -2,7 +2,7 @@
   "name": "switch2idea",
   "displayName": "Switch2IDEA",
   "description": "Quickly switch between VS Code and IntelliJ IDEA, open current file in IDEA with the same position",
-  "version": "1.0.3",
+  "version": "1.0.3-1",
   "publisher": "qczone",
   "license": "MIT",
   "repository": {
@@ -58,7 +58,8 @@
         "switch2idea.ideaPath": {
           "type": "string",
           "default": "",
-          "description": "IDEA executable path"
+          "description": "IDEA executable path",
+          "scope": "resource"
         }
       }
     },

@@ -84,7 +84,7 @@ export function activate(context: vscode.ExtensionContext) {
 			column = editor.selection.active.character;
 		}
 
-		const config = vscode.workspace.getConfiguration('switch2idea');
+		const config = vscode.workspace.getConfiguration('switch2idea', uri);
 		let ideaPath = config.get<string>('ideaPath');
 
 		if (!ideaPath) {
